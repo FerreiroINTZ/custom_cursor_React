@@ -1,10 +1,11 @@
 import style from "./customElement.module.scss"
 
 type Props = {
-    dataType?: String
+    dataType?: String,
+    func?: () => void
 }
 
-function customElement({dataType = "outros"}: Props) {
+function customElement({dataType = "outros", func}: Props) {
   
     function setBgColor(): String{
         switch(dataType){
@@ -14,15 +15,18 @@ function customElement({dataType = "outros"}: Props) {
             case "link":
                 return "#eb7d23"
             break
+            case "toggle-off":
+                return "red"
+            break
             default:
                 return "#66b9f0"
         }
     }
-  
     return (
     <div 
         id={style.element} 
         data-type={dataType}
+        onClick={func}
         style={{"--bg": setBgColor()} as React.CSSProperties}></div>
   )
 }
