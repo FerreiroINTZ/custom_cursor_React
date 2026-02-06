@@ -58,25 +58,28 @@ function cursor({cursorType}: MainProps) {
             window.onmousemove = (e) =>{
                 const {clientX: x, clientY: y} = e
                 
-            // configura a animacao
+            // configura a animacao do follower
             const config = {
                 x, y, duration: 3, scale: 1, ease: "elastic.out(.8, .4" 
             }
 
             // se for um elemento DOM com data-type valido...
-            if(e.target instanceof HTMLElement && e.target.dataset.type){
+            // e se for o primeiro cursor
+            if(
+                e.target instanceof HTMLElement && 
+                e.target.dataset.type &&
+                cursorType
+            ){
                 const {type: dataType} = e.target.dataset
                 config.scale = dataType ? 2.5 : 1
                 
-                if(cursorType){
-                    gsap.set(cursor, {x, y, opacity: 0})
-                    // seta o icone dentro do cursor que segue
-                    i.current!.className = `fa-solid fa-${dataType}`
-                }else{
-                    gsap.set(cursor, {x, y, opacity: 1})    
-                }
+                gsap.set(cursor, {x, y, opacity: 0})
+                // seta o icone dentro do cursor que segue
+                i.current!.className = `fa-solid fa-${dataType}`
                 haveFolower(null, true)
             }else{
+                // remove o icone se nao tiver nada
+                i.current!.className = ""
                 gsap.set(cursor, {x, y, opacity: 1})
                 // gsap.to(followerCursor + "> i", {opacity: 0})
                 haveFolower(config)
